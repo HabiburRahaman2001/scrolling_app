@@ -1,0 +1,137 @@
+
+/* Taken some properties from online  */
+
+.App {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(247, 236, 229, 0.874);
+}
+
+.product-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #d1e8ff, #a7c6ee);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* .product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.1);
+} */
+
+.product-image {
+  max-width: 80%;
+  height: auto;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-name {
+  font-size: 1.75rem;
+  margin: 12px 0;
+  color: #333;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.product-list {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.pagination-controls {
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.pagination-button {
+  padding: 12px 40px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.prev-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.next-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination-button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.main-container {
+  display: flex;
+  /* height: 100vh; */
+}
+
+.welcome-section {
+  width: 40%;
+  /* background-color: #f7f7f7; */
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.product-list {
+  width: 60%;
+  margin-left: 40%; 
+  overflow-y: scroll;
+  padding: 20px;
+  box-sizing: border-box;
+  height: auto; 
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
