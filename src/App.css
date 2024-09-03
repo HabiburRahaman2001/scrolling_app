@@ -1,38 +1,82 @@
 .App {
   text-align: center;
+  padding: 0 20px;
+  background-color: rgb(176, 223, 252);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.product-card {
+  width: 100%;
+  max-width: 400px; 
+  margin: 2px auto; 
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color:grey;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.product-image {
+  max-width: 50%;
+  height: auto;
+  border-radius: 8px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.product-name {
+  font-size: 1.5rem;
+  margin: 8px 0;
+  color: #ddd;
+}
+
+.product-description {
+  font-size: 1rem;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.product-price {
+  font-size: 1.25rem;
+  color:white;
+  font-weight: bold;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.product-list {
+  position: relative;
+  padding-bottom: 50px; 
+}
+
+.pagination-controls {
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content:space-around;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: red;
+}
+
+.pagination-button {
+  padding: 10px 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prev-button {
+  background-color: #f0f0f0;
+}
+
+.next-button {
+  background-color: #007bff;
+  color: #fff;
+  right: 20px;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; 
 }
