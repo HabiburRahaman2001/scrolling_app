@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/scrolling_app/static/css/main.1c3afb78.css",
+    "main.js": "/scrolling_app/static/js/main.88f0edab.js",
+    "static/js/453.93ba6d12.chunk.js": "/scrolling_app/static/js/453.93ba6d12.chunk.js",
+    "index.html": "/scrolling_app/index.html",
+    "main.1c3afb78.css.map": "/scrolling_app/static/css/main.1c3afb78.css.map",
+    "main.88f0edab.js.map": "/scrolling_app/static/js/main.88f0edab.js.map",
+    "453.93ba6d12.chunk.js.map": "/scrolling_app/static/js/453.93ba6d12.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1c3afb78.css",
+    "static/js/main.88f0edab.js"
+  ]
+}
