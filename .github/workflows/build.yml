@@ -29,7 +29,7 @@ jobs:
     - name: "Building project"
       run: npm run build
 
-  build:
+  unit-test:
 
     runs-on: ubuntu-latest
 
