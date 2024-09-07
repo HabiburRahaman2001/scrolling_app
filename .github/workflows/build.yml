@@ -1,46 +1,51 @@
-name: Build React Native Project
+
+name: Build
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "master" ]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: "Installing dependecies"
+      run: npm ci
+    
+    - name: "Building project"
+      run: npm run build
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'  # Use Node.js version 20
+  build:
 
-      - name: Install dependencies
-        run: npm install
+    runs-on: ubuntu-latest
 
-      # Set up Java and Android environment for React Native builds
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'  # React Native requires JDK 11
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
 
-      - name: Set up Android SDK
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: default
-          arch: x86_64
-          profile: Nexus_5X
-
-      - name: Build Android APK
-        run: ./gradlew assembleRelease
-        working-directory: android
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: android/app/build/outputs/apk/release/*.apk
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: "Installing dependecies"
+      run: npm ci
+    
+    - name: "Running test cases"
+      run: npm run test
