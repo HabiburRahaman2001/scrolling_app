@@ -7,12 +7,6 @@ const ProductList = () => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
 
-
-    useEffect(() => {
-        fetchProducts(page);
-    }, [page]);
-
-
     const fetchProducts = useCallback(async (page) => {
         setLoading(true);
         const limit = 10;
@@ -28,7 +22,6 @@ const ProductList = () => {
             } else {
                 setProducts((prevProducts) => [...prevProducts, ...newProducts]);
             }
-
         } catch (error) {
             console.error('Error fetching products:', error);
         } finally {
@@ -36,51 +29,52 @@ const ProductList = () => {
         }
     }, []);
 
+    useEffect(() => {
+        fetchProducts(page);
+    }, [page, fetchProducts]);
 
-
-    const handleScroll = () => {
+    // Wrap handleScroll in useCallback to avoid recreating on every render
+    const handleScroll = useCallback(() => {
         if (loading) return;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight;
         const windowHeight = window.innerHeight;
 
-        if (scrollTop + windowHeight >= scrollHeight- 100) {
+        if (scrollTop + windowHeight >= scrollHeight - 100) {
             setPage((prevPage) => prevPage + 1);
         }
-    };
+    }, [loading]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [loading]);
+    }, [handleScroll]);
 
     return (
         <div className="main-container">
-        <div className="welcome-section">
-            <h1 style={{color:'GrayText'}}>Welcome to ThetaOne Store Update</h1>
-            <h2 style={{color:'red'}}>Buy One Get One Free</h2>
-            <h3 style={{color:'green'}}>Special offer just for you!</h3>
+            <div className="welcome-section">
+                <h1 style={{ color: 'GrayText' }}>Welcome to ThetaOne Store Update</h1>
+                <h2 style={{ color: 'red' }}>Buy One Get One Free</h2>
+                <h3 style={{ color: 'green' }}>Special offer just for you!</h3>
+            </div>
+            <div className="product-list">
+                {products && products.length > 0 ? (
+                    products.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))
+                ) : (
+                    <h1 style={{ color: 'black' }}>Data not found</h1>
+                )}
 
+                {loading && (
+                    <div className="spinner-container">
+                        <ClipLoader size={50} color={"blue"} loading={loading} />
+                    </div>
+                )}
+            </div>
         </div>
-        <div className="product-list">
-            {products && products.length > 0 ? (
-                products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))
-            ) : (
-                <h1 style={{color:'black'}}>Data not found</h1>
-            )}
-
-            {loading && (
-                <div className="spinner-container">
-                    <ClipLoader size={50} color={"blue"} loading={loading} />
-                </div>
-            )}
-        </div>
-    </div>
-
     );
 };
 
