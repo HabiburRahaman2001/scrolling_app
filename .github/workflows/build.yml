@@ -77,7 +77,11 @@
 
 
    
-name: Build APK
+- name: Run GitHub Script
+  uses: actions/github-script@v6
+  with:
+    script: |
+      console.log("Hello from GitHub Actions!");
 
 on:
   push:
