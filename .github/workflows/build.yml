@@ -82,7 +82,9 @@ on:
   push:
     branches:
       - main  # Trigger only on push to main branch
-
+  pull_request:
+    branches:
+      - main 
 
 jobs:
   build:
