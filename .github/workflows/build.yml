@@ -76,20 +76,15 @@
    
 
 
-   
-- name: Run GitHub Script
-  uses: actions/github-script@v6
-  with:
-    script: |
-      console.log("Hello from GitHub Actions!");
+   name: Build APK
 
 on:
   push:
     branches:
-      - main # Specify the branch that triggers the build, e.g., main or release
-  pull_request:
-    branches:
-      - main
+      - main  # Specify the branch that triggers the build, e.g., main or release
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   build:
@@ -109,12 +104,20 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: '17'
+        java-version: '17'  # Use JDK version 17
 
     - name: Install Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '20'  # Specify the node version
+        node-version: '20'  # Use Node.js version 20
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
 
     - name: Install Yarn
       run: npm install -g yarn
@@ -125,7 +128,7 @@ jobs:
     - name: Install Android SDK
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 30
+        api-level: 34
         target: default
         arch: x86_64
         channel: stable
@@ -144,3 +147,30 @@ jobs:
       with:
         name: app-release.apk
         path: android/app/build/outputs/apk/release/app-release.apk
+
+    # Optional: Notify Slack when build is complete
+    - name: Notify via Slack
+      if: success()
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        payload: |
+          {
+            "text": "New APK has been built successfully :rocket:",
+            "attachments": [
+              {
+                "title": "Download APK",
+                "title_link": "${{ github.server_url }}/{{ github.repository }}/actions/runs/${{ github.run_id }}"
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    # Optional: Upload to Firebase App Distribution
+    - name: Upload to Firebase App Distribution
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        token: ${{ secrets.FIREBASE_TOKEN }}
+        groups: testers
+        file: android/app/build/outputs/apk/release/app-release.apk
