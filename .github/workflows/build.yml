@@ -1,76 +1,142 @@
 
-name: Build
+# name: Build
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+#     strategy:
+#       matrix:
+#         node-version: [18.x, 20.x, 22.x]
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: "Installing dependecies"
-      run: npm ci
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
+#     - name: "Installing dependecies"
+#       run: npm ci
     
-    - name: "Building project"
-      run: npm run build
+#     - name: "Building project"
+#       run: npm run build
 
-  unit-test:
+#   unit-test:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+#     strategy:
+#       matrix:
+#         node-version: [18.x, 20.x, 22.x]
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: "Installing dependecies"
-      run: npm ci
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
+#     - name: "Installing dependecies"
+#       run: npm ci
     
-    - name: "Running test cases"
-      run: npm run test
+#     - name: "Running test cases"
+#       run: npm run test
 
-  release-apk:
+#   release-apk:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+#     strategy:
+#       matrix:
+#         node-version: [18.x, 20.x, 22.x]
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: "Installing dependecies"
-      run: npm ci
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
+#     - name: "Installing dependecies"
+#       run: npm ci
     
-    - name: Build
-        run: ./gradlew assembleRelease
-        working-directory: ./android
+#     - name: Build
+#         run: ./gradlew assembleRelease
+#         working-directory: ./android
 
 
    
+
+
+   
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main # Specify the branch that triggers the build, e.g., main or release
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    env:
+      # Environment variables for the keystore and Java
+      KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: '17'
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'  # Specify the node version
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Install Android SDK
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 30
+        target: default
+        arch: x86_64
+        channel: stable
+
+    - name: Decrypt Keystore
+      if: env.ANDROID_KEYSTORE_BASE64
+      run: echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > android/app/keystore/your-key.keystore
+
+    - name: Build APK
+      run: |
+        cd android
+        ./gradlew assembleRelease
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: android/app/build/outputs/apk/release/app-release.apk
