@@ -76,15 +76,13 @@
    
 
 
-   name: Build APK
+name: Build APK
 
 on:
   push:
     branches:
-      - main  # Specify the branch that triggers the build, e.g., main or release
-  # pull_request:
-  #   branches:
-  #     - main
+      - main  # Trigger only on push to main branch
+
 
 jobs:
   build:
