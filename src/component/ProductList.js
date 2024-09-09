@@ -23,31 +23,32 @@ const ProductList = () => {
             } else {
                 setProducts((prevProducts) => [...prevProducts, ...newProducts]);
             }
-
+            setLoading(false)
         } catch (error) {
             console.error('Error fetching products:', error);
-        } finally {
-            setTimeout(() => setLoading(false), 10000);
         }
+        //  finally {
+        //     setTimeout(() => setLoading(false), 10000);
+        // }
     }, []);
 
 
 
     useEffect(() => {
         fetchProducts(page);
-    }, [page,fetchProducts]);
+    }, [page, fetchProducts]);
 
 
-    const handleScroll =useCallback(() => {
+    const handleScroll = useCallback(() => {
         if (loading) return;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight;
         const windowHeight = window.innerHeight;
 
-        if (scrollTop + windowHeight >= scrollHeight- 100) {
+        if (scrollTop + windowHeight >= scrollHeight - 100) {
             setPage((prevPage) => prevPage + 1);
         }
-    },[loading]);
+    }, [loading]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
@@ -58,28 +59,28 @@ const ProductList = () => {
 
     return (
         <div className="main-container">
-        <div className="welcome-section">
-            <h1 style={{color:'GrayText'}}>Welcome to ThetaOne Store</h1>
-            <h2 style={{color:'red'}}>Buy One Get One Free</h2>
-            <h3 style={{color:'green'}}>Special offer just for you!</h3>
+            <div className="welcome-section">
+                <h1 style={{ color: 'GrayText' }}>Welcome to ThetaOne Store</h1>
+                <h2 style={{ color: 'red' }}>Buy One Get One Free</h2>
+                <h3 style={{ color: 'green' }}>Special offer just for you!</h3>
 
-        </div>
-        <div className="product-list">
-            {products && products.length > 0 ? (
-                products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))
-            ) : (
-                <h1 style={{color:'black'}}>Data not found</h1>
-            )}
+            </div>
+            <div className="product-list">
+                {products && products.length > 0 ? (
+                    products.map((product) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))
+                ) : (
+                    <h1 style={{ color: 'black' }}>Data not found</h1>
+                )}
 
-            {loading && (
-                <div className="spinner-container">
-                    <ClipLoader size={50} color={"blue"} loading={loading} />
-                </div>
-            )}
+                {loading && (
+                    <div className="spinner-container">
+                        <ClipLoader size={50} color={"blue"} loading={loading} />
+                    </div>
+                )}
+            </div>
         </div>
-    </div>
 
     );
 };
