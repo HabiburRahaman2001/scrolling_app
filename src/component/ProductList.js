@@ -8,11 +8,6 @@ const ProductList = () => {
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(() => {
-        fetchProducts(page);
-    }, [page]);
-
-
     const fetchProducts = useCallback(async (page) => {
         setLoading(true);
         const limit = 10;
@@ -38,7 +33,12 @@ const ProductList = () => {
 
 
 
-    const handleScroll = () => {
+    useEffect(() => {
+        fetchProducts(page);
+    }, [page,fetchProducts]);
+
+
+    const handleScroll =useCallback(() => {
         if (loading) return;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight;
@@ -47,14 +47,14 @@ const ProductList = () => {
         if (scrollTop + windowHeight >= scrollHeight- 100) {
             setPage((prevPage) => prevPage + 1);
         }
-    };
+    },[loading]);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [loading]);
+    }, [handleScroll]);
 
     return (
         <div className="main-container">
