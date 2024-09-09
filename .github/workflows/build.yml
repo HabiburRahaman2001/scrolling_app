@@ -159,18 +159,18 @@ jobs:
     - name: Build project
       run: npm run build
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    steps:
-    # Checkout repository (again for deploy step)
-    - name: Checkout repository
-      uses: actions/checkout@v3
+  #   steps:
+  #   # Checkout repository (again for deploy step)
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v3
 
-    # Deploy to GitHub Pages or a custom server (example below for GitHub Pages)
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+  #   # Deploy to GitHub Pages or a custom server (example below for GitHub Pages)
+  #   - name: Deploy to GitHub Pages
+  #     uses: peaceiris/actions-gh-pages@v3
+  #     with:
+  #       github_token: ${{ secrets.GITHUB_TOKEN }}
+  #       publish_dir: ./build
