@@ -126,8 +126,10 @@
 
 
 
-
 name: Build and Deploy React App
+
+permissions:
+  contents: write  # Grant write permissions to the GitHub Actions bot
 
 on:
   push:
