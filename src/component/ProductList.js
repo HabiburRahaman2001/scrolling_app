@@ -59,7 +59,7 @@ const ProductList = () => {
     return (
         <div className="main-container">
         <div className="welcome-section">
-            <h1 style={{color:'GrayText'}}>Welcome to ThetaOne Store Update</h1>
+            <h1 style={{color:'GrayText'}}>Welcome to HR Store</h1>
             <h2 style={{color:'red'}}>Buy One Get One Free</h2>
             <h3 style={{color:'green'}}>Special offer just for you!</h3>
 
